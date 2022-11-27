@@ -3,14 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using TMPro;
 
 public class MainManager : MonoBehaviour
 {
+    [SerializeField] HighestScoreChannel highestScoreChannel;
+    [SerializeField] User user;
     public Brick BrickPrefab;
     public int LineCount = 6;
     public Rigidbody Ball;
 
-    public Text ScoreText;
+    public TextMeshProUGUI ScoreText;
     public GameObject GameOverText;
     
     private bool m_Started = false;
@@ -65,6 +68,7 @@ public class MainManager : MonoBehaviour
     void AddPoint(int point)
     {
         m_Points += point;
+        user.ChangeScore(m_Points);
         ScoreText.text = $"Score : {m_Points}";
     }
 
@@ -72,5 +76,7 @@ public class MainManager : MonoBehaviour
     {
         m_GameOver = true;
         GameOverText.SetActive(true);
+        highestScoreChannel.InvokeNewScore(user.Name, user.Score);
+
     }
 }
